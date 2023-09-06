@@ -12,6 +12,8 @@ G_MAC_PREFIX_PREQ = "^1c:1b:0d:"
 import sys
 import re
 import shell_command as shcmd
+import bdp_over_ethernet as boe
+import parse_bdp_command_responses as pcr
 
 # ============================================================================ #
 
@@ -105,6 +107,21 @@ def get_hostname( dev_list ) :
                 # break
     return
 
+# ---------------------------------------------------------------------------- #
+# 
+
+def get_ntpqname( dev_list ) :
+    for dev in dev_list:
+        # print( "dev:", dev )
+        bdp_data = boe.bdp_response_data("?Gn00000000003E", dev[1])
+        # print( "BDP: Data:", bdp_data )
+        xxx = pcr.parse_command_response_data( "Gn", bdp_data)
+        # print( "NetPREQ Name:", xxx[4] )
+        dev[2] = xxx[4]
+        # print( "NetPREQ Name:", xxx )
+
+    return
+
 # ============================================================================ #
 
 if __name__ == '__main__' :
@@ -116,28 +133,26 @@ if __name__ == '__main__' :
     # for item in dv_list:
     #     print(item)
 
+    pq_list = get_list_pcpq(dv_list)
+    get_hostname(pq_list)
+    print("PC-PREQ List")
+    for item in pq_list:
+        print(item)
+
+    print( "length bfr:", len(dv_list) )
+    test_list = ["10:65:30:b9:1a:22", "98:e7:43:cd:16:3b"]
+    lt_list = get_list_lptp(dv_list, test_list)
+    get_hostname(lt_list)
+    print("Laptop List")
+    for item in lt_list:
+        print(item)
+    print( "length aft:", len(dv_list) )
+
     np_list = get_list_ntpq(dv_list)
+    get_ntpqname(np_list)
     print("NetPREQ List")
     for item in np_list:
         print(item)
-
-    pq_list = get_list_pcpq(dv_list)
-    # print("PC-PREQ List")
-    # for item in pq_list:
-    #     print(item)
-    get_hostname(pq_list)
-#    for item in pq_list:
-#        print(item)
-
-    # print( "length bfr:", len(dv_list) )
-    lt_list = get_list_lptp(dv_list)
-    # print("Laptop List")
-    # for item in lt_list:
-    #     print(item)
-    # print( "length aft:", len(dv_list) )
-    get_hostname(lt_list)
-#    for item in lt_list:
-#        print(item)
 
     print("Python Script: END")
     sys.exit(0)

@@ -122,6 +122,36 @@ def get_ntpqname( dev_list ) :
 
     return
 
+# ---------------------------------------------------------------------------- #
+# 
+
+def get_ntpqvrsn( dev_list ) :
+    for dev in dev_list:
+        # print( "dev:", dev )
+        bdp_data = boe.bdp_response_data("?GV00", dev[1])
+        print( "BDP: Data:", bdp_data )
+        xxx = pcr.parse_command_response_data( "GV", bdp_data)
+        # print( "NetPREQ Name:", xxx[4] )
+        dev.append(xxx)
+        # print( "NetPREQ Name:", xxx )
+
+    return
+
+# ---------------------------------------------------------------------------- #
+# 
+
+def get_ntpqsmrt( dev_list ) :
+    for dev in dev_list:
+        # print( "dev:", dev )
+        bdp_data = boe.bdp_response_data("?Gj", dev[1])
+        print( "BDP: Data:", bdp_data )
+        xxx = pcr.parse_command_response_data( "Gj", bdp_data)
+        # print( "NetPREQ Name:", xxx[4] )
+        dev.append(xxx)
+        # print( "NetPREQ Name:", xxx )
+
+    return
+
 # ============================================================================ #
 
 if __name__ == '__main__' :

@@ -32,6 +32,8 @@ if __name__ == '__main__' :
 
     np_list = svlst.get_list_ntpq(dv_list)
     svlst.get_ntpqname(np_list)
+    svlst.get_ntpqvrsn(np_list)
+    svlst.get_ntpqsmrt(np_list)
     print("\nNetPREQ List:")
     for item in np_list:
         print(item)

@@ -5,12 +5,13 @@ import sys
 # ============================================================================ #
 
 def xlt_sHex_to_sChr( my_strHex, truncate = False ) :
-   end = len( my_strHex)
+   end = len(my_strHex)
    my_strChr = str( )
    idx = 0
    while( end - idx ) :
       xxx = "0x" + my_strHex[idx:idx+2]     # hex value string
       yyy = int(xxx,16)                     # integer equivalent
+      # truncate would be used in the case of a NULL terminated string
       if ( truncate and ( yyy == 0 ) ) :
          break
       if ( (yyy >= 32) and (yyy <= 126) ) :
@@ -87,16 +88,34 @@ def get_netpreq_info_block(info_block_str):
 
 def parse_command_response_data( bdp_cmd, bdp_dat) :
 
-   if   bdp_cmd == "Gn" :
-      # print( "Gn: Read NVRAM" )
-      return ( get_netpreq_info_block(bdp_dat) )
+    if   bdp_cmd == "Gn" :
+        # print( "Gn: Read NVRAM" )
+        return ( get_netpreq_info_block(bdp_dat) )
 
-   elif bdp_cmd == "GV" :
-      print( "GV: Firmware Version" )
-   elif bdp_cmd == "GP" :
-      print( "GP: Routing Preservation" )
-   else                 :
-      print( "That does not compute!" )
+    elif bdp_cmd == "GV" :
+        # print( "GV: Firmware Version" )
+        answer = xlt_sHex_to_sChr( bdp_dat )
+        return ( answer )
+
+    elif bdp_cmd == "Gj" :
+        # print( "\nGj: Sample Rate" )
+        # print( "type:", type(bdp_dat))
+        # print( "length data:", len(bdp_dat))
+        # print( "data:", bdp_dat)
+        answer = int( bdp_dat, 16 )
+        # print( "type:", type(answer))
+        # print( "answer:", answer)
+        return ( answer )
+
+    # elif bdp_cmd == "XX" :
+    #     print( "type:", type(bdp_dat))
+    #     print( "length data:", bdp_dat)
+    #     answer = xlt_sHex_to_sChr( bdp_dat )
+    #     print( "type:", type(answer))
+    #     print( "answer:", answer)
+
+    else                 :
+        print( "That does not compute!" )
 
 
 # ============================================================================ #

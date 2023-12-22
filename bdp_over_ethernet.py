@@ -81,9 +81,9 @@ if __name__ == '__main__' :
     bdp_cmd = sys.argv[2]
     netpreq_ip_port = DEFAULT_NETPREQ_IP
 
-    # print( "Cmd:", bdp_cmd )
+    print( "Cmd:", bdp_cmd )
     bdp_rsp = bdp_over_ethernet( bdp_cmd, netpreq_ip_adrs )
-    # print( "Rsp:", bdp_rsp )
+    print( "Rsp:", bdp_rsp )
     xxx_list = bdp_parse_response(bdp_rsp)
 
     bdp_response_report( xxx_list )
